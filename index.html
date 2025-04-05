@@ -62,8 +62,40 @@
         border-radius: 6px;
       }
 
+      .btn:disabled {
+        cursor: not-allowed;
+      }
+
       .submit {
         margin-top: 10px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #eee;
+        }
+
+        textarea {
+          background-color: #1e1e1e;
+          color: #eee;
+          border: 1px solid #333;
+        }
+
+        .btn {
+          background-color: #eee;
+          color: #121212;
+        }
+
+        .btn:hover:not(:disabled),
+        .btn:disabled {
+          background-color: #bbb;
+        }
+
+        p {
+          background-color: #1e1e1e;
+          color: #eee;
+        }
       }
     </style>
   </head>
