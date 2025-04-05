@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vent Wall</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #f4f4f4;
+        color: rgb(25, 25, 25);
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0 auto;
+        max-width: 700px;
+      }
+
+      @media screen and (max-width: 700px) {
+        main {
+          padding: 0 10px;
+        }
+      }
+
+      h1 {
+        font-size: 50px;
+        margin-top: 30px;
+        text-align: center;
+      }
+      p {
+        margin-top: 10px;
+        background-color: #fff;
+        padding: 10px 15px;
+        border-radius: 10px;
+      }
+
+      .desc {
+        font-style: italic;
+        text-align: center;
+      }
+
+      form {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      textarea {
+        width: 100%;
+        max-width: 700px;
+        height: 150px;
+        padding: 10px;
+        font-size: 16px;
+        resize: vertical;
+      }
+
+      .btn {
+        border: none;
+        cursor: pointer;
+        padding: 10px 15px;
+        border-radius: 6px;
+      }
+
+      .submit {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Vent Freely. Stored Locally.</h1>
+      <p class="desc">
+        Express without judgment. Everything stays on your browser.
+      </p>
+    </header>
+    <main>
+      <section>
+        <form id="form-vent">
+          <label for="vent">
+            <textarea
+              id="vent"
+              name="vent"
+              placeholder="Spill it. No one's judging 👀"
+              autofocus
+            ></textarea>
+            <input type="submit" class="btn submit" value="Done Venting" />
+          </label>
+        </form>
+      </section>
+      <section id="section-vent"></section>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const ventsObject = localStorage.getItem("vents");
+
+        if (ventsObject) {
+          const vents = JSON.parse(ventsObject);
+          vents.forEach((vent) => {
+            document
+              .querySelector("#section-vent")
+              .insertAdjacentHTML("afterbegin", `<p>${vent}</p>`);
+          });
+        }
+      });
+
+      const form = document.getElementById("form-vent");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const vent = formData.get("vent").trim();
+
+        if (!vent) return;
+
+        const ventsObject = localStorage.getItem("vents");
+        const vents = ventsObject ? JSON.parse(ventsObject) : [];
+
+        vents.push(vent);
+        localStorage.setItem("vents", JSON.stringify(vents));
+
+        document
+          .querySelector("#section-vent")
+          .insertAdjacentHTML("afterbegin", `<p>${vent}</p>`);
+
+        const submit = document.querySelector(".submit");
+        submit.disabled = true;
+        submit.value = "Boom. Gone. 💥";
+
+        setTimeout(() => {
+          submit.disabled = false;
+          submit.value = "Done Venting";
+        }, 1500);
+
+        form.reset();
+        document.getElementById("vent").focus();
+      });
+    </script>
+  </body>
+</html>
